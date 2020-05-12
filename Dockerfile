@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM xordiv/docker-alpine-cron:latest
 
 # https://github.com/codecasts/php-alpine/blob/master/README.md
 
