@@ -1,4 +1,13 @@
-FROM xordiv/docker-alpine-cron:latest
+FROM alpine:latest
+
+RUN apk update && apk add dcron curl wget rsync ca-certificates && rm -rf /var/cache/apk/*
+
+RUN mkdir -p /var/log/cron && mkdir -m 0644 -p /var/spool/cron/crontabs && touch /var/log/cron/cron.log && mkdir -m 0644 -p /etc/cron.d
+
+COPY /scripts/* /
+
+ENTRYPOINT ["/docker-entry.sh"]
+CMD ["/docker-cmd.sh"]
 
 # https://github.com/codecasts/php-alpine/blob/master/README.md
 
@@ -75,7 +84,3 @@ RUN apk add --update \
     php-secp256k1	 \
     argon2	 \
     libargon2
-
-RUN  php7 -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php7 composer-setup.php \
-    && php7 -r "unlink('composer-setup.php');"
